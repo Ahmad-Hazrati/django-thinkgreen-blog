@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-ahmadhazrat-djangothink-b7in4x661gy.ws-eu104.gitpod.io']
+ALLOWED_HOSTS = ['thinkgreen-app-358b81a3a5f3.herokuapp.com', '8000-ahmadhazrat-djangothink-b7in4x661gy.ws-eu104.gitpod.io']
 
 
 # Application definition
