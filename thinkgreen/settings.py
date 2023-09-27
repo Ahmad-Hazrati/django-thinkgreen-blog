@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['thinkgreen-app-358b81a3a5f3.herokuapp.com', '8000-ahmadhazrat-djangothink-b7in4x661gy.ws-eu104.gitpod.io']
+ALLOWED_HOSTS = ['thinkgreen-app-358b81a3a5f3.herokuapp.com', '8000-ahmadhazrat-djangothink-b7in4x661gy.ws-eu105.gitpod.io']
 
 
 # Application definition
@@ -42,6 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
     'django.contrib.staticfiles',
 
     # Apps
@@ -52,7 +56,16 @@ INSTALLED_APPS = [
     'django_summernote',
 ]
 
+
+SITE_ID = 1
+
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+
 MIDDLEWARE = [
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
