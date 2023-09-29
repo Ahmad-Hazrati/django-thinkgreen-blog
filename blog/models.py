@@ -1,11 +1,21 @@
 from django.db import models
 from django.contrib.auth.models import User
 from cloudinary.models import CloudinaryField
+from django.urls import reverse
 
 STATUS = ((0, "Draft"), (1, "Published"))
 
+
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class Post(models.Model):
     title = models.CharField(max_length=200, unique=True)
+    category = models. ForeignKey(Category, on_delete=models.PROTECT, default=1)
     slug = models.SlugField(max_length=200, unique=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="blog_post")
     updated_on = models.DateTimeField(auto_now=True)
@@ -36,6 +46,7 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['created_on']
+
 
 def __str__(self):
     return f"Comment {self.body} by {self.name}"

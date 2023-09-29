@@ -1,7 +1,9 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.views import generic, View
-from .models import Post
+from django.http import HttpResponseRedirect
+from .models import Post, Comment, Category
 from .forms import CommentForm
+from django.views.generic import ListView
 
 
 class PostList(generic.ListView):
@@ -12,7 +14,7 @@ class PostList(generic.ListView):
 
 
 class PostDetail(View):
-    
+
     def get(self, request, slug, *args, **kwargs):
         queryset = Post.objects.filter(status=1)
         post = get_object_or_404(queryset, slug=slug)
@@ -31,7 +33,6 @@ class PostDetail(View):
                 "comment_form": CommentForm()
             },
         )
-
 
     def post(self, request, slug, *args, **kwargs):
         queryset = Post.objects.filter(status=1)
@@ -62,3 +63,35 @@ class PostDetail(View):
                 "comment_form": CommentForm()
             },
         )
+
+
+class PostLike(View):
+
+    def post(self, request, slug):
+        post = get_object_or_404(Post, slug=slug)
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+        else:
+            post.likes.add(request.user)
+
+        return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+
+
+class CatListView(ListView):
+    template_name = 'category.html'
+    context_object_name = 'catlist'
+
+    def get_queryset(self):
+        content = {
+            'cat': self.kwargs['category'],
+            'posts': Post.objects.filter(category__name=self.kwargs['category']).filter(status='1')
+        }
+        return content
+
+
+def category_list(request):
+    category_list = Category.objects.exclude(name='default')
+    context = {
+        "category_list": category_list,
+    }
+    return context
