@@ -84,7 +84,7 @@ class CatListView(ListView):
     def get_queryset(self):
         content = {
             'cat': self.kwargs['category'],
-            'posts': Post.objects.filter(category__name=self.kwargs['category']).filter(status='1')
+            'posts': Post.objects.filter(category__name=self.kwargs['category']).filter(status='published')
         }
         return content
 
